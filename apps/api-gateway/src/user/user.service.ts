@@ -8,7 +8,7 @@ import { GetAllUsersDto } from './dto/get-all-users.dto';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { AddPasskeyDetailsDto } from './dto/add-user.dto';
 import { UpdatePlatformSettingsDto } from './dto/update-platform-settings.dto';
-import { CreateUserCertificateDto } from './dto/share-certificate.dto';
+import { CreateCertificateDto } from './dto/share-certificate.dto';
 import { IUsersProfile, ICheckUserDetails } from 'apps/user/interfaces/user.interface';
 import { IUsersActivity } from 'libs/user-activity/interface';
 import { IUserInvitations } from '@credebl/common/interfaces/user.interface';
@@ -62,7 +62,7 @@ export class UserService extends BaseService {
   }
 
   async shareUserCertificate(
-    shareUserCredentials: CreateUserCertificateDto
+    shareUserCredentials: CreateCertificateDto
   ): Promise<Buffer> {
     const payload = { shareUserCredentials};
     return this.sendNatsMessage(this.serviceProxy, 'share-user-certificate', payload);

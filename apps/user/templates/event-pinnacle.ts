@@ -5,7 +5,7 @@ export class EventPinnacle {
     return attributes.find((attr) => name in attr);
   }
 
-  async getPinnacleWinner(attributes: Attribute[]): Promise<string> {
+  async getPinnacleWinner(attributes: Attribute[], qrCode): Promise<string> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [name, description] = await Promise.all(attributes).then((attributes) => {
@@ -35,7 +35,7 @@ export class EventPinnacle {
                   </div>
                   <div style="box-shadow: 0px 0px 25px -10px black;padding: 2rem 6rem;position: absolute;width: 1372px;min-width: 1398px;height: calc(100% - 4.45rem + 1.5px);top: 0px;">
                       <div style="position: absolute; right: 4rem; bottom: 3rem">
-                          <img style="height: 94px;" src="./anniversary.svg" />
+                          <img style="height: 70px;" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/anniversary.svg" />
                       </div>
                       <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto;">
                           <div>
@@ -49,22 +49,25 @@ export class EventPinnacle {
                               <p style="color: #342094;">${description}</p>
                               <p style="font-weight: bolder; color: #342094;">~  23rd March 2024  ~</p>
                           </div>
-                          <div style="display: flex; justify-content: center; gap: 3rem; font-size: 32px; text-align: center; margin-top: 1rem; position: absolute; bottom: 3rem; color: #342094;">
-                              <div style="display: flex; flex-direction: column; align-items: center;">
-                                  <img style="height: 99px" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/kk-sign.svg" />
-                                  <div style="border-top: 1px solid #000000; margin-top: -1rem; padding: 1rem 2rem 0 2rem;">
-                                      <p>Kirankalyan Kulkarni</p>
-                                      <p>CEO & Co-Founder</p>
-                                  </div>
-                              </div>
-                              <div style="display: flex; flex-direction: column; align-items: center;">
-                                  <img style="height: 99px" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/ak-sign.svg" />
-                                  <div style="border-top: 1px solid #000000; margin-top: -1rem; padding: 1rem 2rem 0 2rem;">
-                                      <p>Ajay Jadhav</p>
-                                      <p>CTO & Co-Founder</p>
-                                  </div>
-                              </div>
-                          </div>
+                          <div style="display: flex; justify-content: flex-end; gap: 3rem; font-size: 32px; text-align: center; margin-top: 1rem; position: absolute; bottom: 3rem; color: #342094;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <img style="height: 99px" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/kk-sign.svg" />
+        <div style="border-top: 1px solid #000000; margin-top: -1rem; padding: 1rem 2rem 0 2rem;">
+            <p>Kirankalyan Kulkarni</p>
+            <p>CEO & Co-Founder</p>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <img src="${qrCode}" style="width: 200px; height: 200px;" alt="QR Code" />
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <img style="height: 99px" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/ak-sign.svg" />
+        <div style="border-top: 1px solid #000000; margin-top: -1rem; padding: 1rem 2rem 0 2rem;">
+            <p>Ajay Jadhav</p>
+            <p>CTO & Co-Founder</p>
+        </div>
+    </div>
+</div>
                       </div>
                   </div>
               </div>

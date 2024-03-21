@@ -58,6 +58,7 @@ import { ISendVerificationEmail, ISignInUser, IVerifyUserEmail, IUserInvitations
 import { AddPasskeyDetailsDto } from 'apps/api-gateway/src/user/dto/add-user.dto';
 import { EventPinnacle } from '../templates/event-pinnacle';
 import { EventCertificate } from '../templates/event-certificates';
+import * as QRCode from 'qrcode';
 
 @Injectable()
 export class UserService {
@@ -563,6 +564,7 @@ export class UserService {
      
       attributeArray.push(attributeJson);
     });
+
    
     switch (shareUserCertificate.schemaId.split(':')[2]) {
       case UserCertificateId.WINNER:
@@ -586,12 +588,14 @@ export class UserService {
         template = await userWorldRecordTemplate.getWorldRecordTemplate(attributeArray);
         break;
         case UserCertificateId.AYANWORKS_EVENT:
+          // eslint-disable-next-line no-case-declarations
+          const QRDetails = await this.getShorteningURL(shareUserCertificate, attributeArray);
           if (CertificateDetails.PINNACLE_CRED_DEF === shareUserCertificate.credDefId) {
             const userWinnerTemplate = new EventPinnacle();
-            template = await userWinnerTemplate.getPinnacleWinner(attributeArray);
+            template = await userWinnerTemplate.getPinnacleWinner(attributeArray, QRDetails);
           } else {
             const userWinnerTemplate = new EventCertificate();
-            template = await userWinnerTemplate.getCertificateWinner(attributeArray);
+            template = await userWinnerTemplate.getCertificateWinner(attributeArray, QRDetails);
           }
           break;  
       default:
@@ -647,6 +651,23 @@ export class UserService {
     const screenshot = await page.screenshot();
     await browser.close();
     return screenshot;
+  }
+
+  //Need to add interface
+  async getShorteningURL(shareUserCertificate, attributeArray): Promise<unknown> {
+    const urlObject = {
+      schemaId: shareUserCertificate.schemaId,
+      credDefId: shareUserCertificate.credDefId,
+      attribute: attributeArray,
+      credentialId:shareUserCertificate.credentialId,
+      email:attributeArray.find((attr) => "email" in attr).email
+    };
+
+    const qrCodeOptions = { type: 'image/png' };
+    const encodedData = Buffer.from(JSON.stringify(shareUserCertificate)).toString('base64');
+      const qrCode = await QRCode.toDataURL(`https://credebl.id/c_v?${encodedData}`, qrCodeOptions);
+
+    return qrCode;
   }
 
   /**
