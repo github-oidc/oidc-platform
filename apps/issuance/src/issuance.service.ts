@@ -351,7 +351,8 @@ export class IssuanceService {
               }
             },
             autoAcceptCredential: 'always',
-            comment
+            comment,
+            label: organizationDetails?.name
           };
 
           const credentialCreateOfferDetails = await this._outOfBandCredentialOffer(outOfBandIssuancePayload, url, apiKey);
