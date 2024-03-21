@@ -47,7 +47,7 @@ export class EventCertificate {
                           <div style="font-size: 32px; text-align: center; max-width: 1082px;">
                               <p style="color: #342094;">this certificate is proudly presented to</p>
                               <h1 style="color: #02205F; font-size: 120px; font-family: 'MonteCarlo', cursive; font-weight: 400;">${name}</h1>
-                              <p style="color: #342094;">for reflecting the attitude towards learning with pace and contribution in paving strategic path for the company in new & emerging technologies.</p>
+                              <p style="color: #342094;">${description}</p>
                               <p style="font-weight: bolder; color: #342094;">~  23rd March 2024  ~</p>
                           </div>
                           <div style="display: flex; justify-content: center; gap: 3rem; font-size: 32px; text-align: center; margin-top: 1rem; position: absolute; bottom: 3rem; color: #342094;">

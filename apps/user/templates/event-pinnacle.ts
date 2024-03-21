@@ -42,7 +42,7 @@ export class EventPinnacle {
                               <img style="height: 68px;" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/ayanworks-logo-invert.svg" />
                           </div>
                           <h2 style="color: #FFFFFF; font-size: 60px; font-weight: 400;">Certificate of Appreciation</h2>
-                          <h1 style="color: #FFFFFF; font-size: 86px; font-family: 'Federo', sans-serif; font-weight: 600;">-Pinnacle Performer-</h1>
+                          <h1 style="color: #FFFFFF; font-size: 86px; font-family: 'Federo', sans-serif; font-weight: 600;">- Pinnacle Performer -</h1>
                           <div style="font-size: 32px; text-align: center; max-width: 1082px;">
                               <p style="color: #342094;">this certificate is proudly presented to</p>
                               <h1 style="font-size: 120px;font-family: 'MonteCarlo', cursive;font-weight: 400;background-image: url(https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/golden-name.svg);color: transparent;background-repeat: no-repeat;background-size: cover;background-position: top;background-clip: text;-webkit-background-clip: text;">${name}</h1>
