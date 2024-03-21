@@ -590,7 +590,7 @@ export class UserService {
         case UserCertificateId.AYANWORKS_EVENT:
           // eslint-disable-next-line no-case-declarations
           const QRDetails = await this.getShorteningURL(shareUserCertificate, attributeArray);
-          if (CertificateDetails.PINNACLE_CRED_DEF === shareUserCertificate.credDefId) {
+          if (shareUserCertificate.attributes.some(item => item.value.toLocaleLowerCase().includes("pinnacle"))) {
             const userWinnerTemplate = new EventPinnacle();
             template = await userWinnerTemplate.getPinnacleWinner(attributeArray, QRDetails);
           } else {

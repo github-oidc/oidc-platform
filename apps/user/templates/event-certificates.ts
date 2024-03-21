@@ -8,11 +8,11 @@ export class EventCertificate {
   async getCertificateWinner(attributes: Attribute[], QRDetails): Promise<string> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [name, description, title] = await Promise.all(attributes).then((attributes) => {
+      const [name, description, category] = await Promise.all(attributes).then((attributes) => {
         const name = this.findAttributeByName(attributes, 'name').name ?? '';
         const description = this.findAttributeByName(attributes, 'description').description ?? '';
-        const title = this.findAttributeByName(attributes, 'title').title ?? '';
-        return [name, description, title];
+        const category = this.findAttributeByName(attributes, 'category').category ?? '';
+        return [name, description, category];
       });
       return `<!DOCTYPE html>
       <html lang="en">
@@ -43,7 +43,7 @@ export class EventCertificate {
                               <img style="height: 68px;" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/ayanworks-logo.svg" />
                           </div>
                           <h2 style="color: #10005F; font-size: 60px; font-weight: 400;">Certificate of Appreciation</h2>
-                          <h1 style="color: #10005F; font-size: 86px; font-family: 'Federo', sans-serif; font-weight: 600;">- ${title} -</h1>
+                          <h1 style="color: #10005F; font-size: 86px; font-family: 'Federo', sans-serif; font-weight: 600;">- ${category} -</h1>
                           <div style="font-size: 32px; text-align: center; max-width: 1082px;">
                               <p style="color: #342094;">this certificate is proudly presented to</p>
                               <h1 style="color: #02205F; font-size: 120px; font-family: 'MonteCarlo', cursive; font-weight: 400;">${name}</h1>

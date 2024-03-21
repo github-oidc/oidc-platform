@@ -8,12 +8,6 @@ interface Attribute {
   value: string;
 }
 export class CreateCertificateDto {
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Please provide valid schemaId' })
-  @Transform(({ value }) => trim(value))
-  @IsString({ message: 'credentialId should be string' })
-  credentialId: string;
-
   @ApiProperty({ example: 'SchemaId' })
   @IsNotEmpty({ message: 'Please provide valid schemaId' })
   @Transform(({ value }) => trim(value))
