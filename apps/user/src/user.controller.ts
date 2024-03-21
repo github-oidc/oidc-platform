@@ -1,4 +1,4 @@
-import { ICheckUserDetails, PlatformSettings, ShareUserCertificate, UpdateUserProfile, IUserCredentials, IUsersProfile, IUserInformation, IUserSignIn} from '../interfaces/user.interface';
+import { ICheckUserDetails, PlatformSettings, IShareUserCertificate, UpdateUserProfile, IUserCredentials, IUsersProfile, IUserInformation, IUserSignIn} from '../interfaces/user.interface';
 import {IOrgUsers, Payload} from '../interfaces/user.interface';
 
 import { AcceptRejectInvitationDto } from '../dtos/accept-reject-invitation.dto';
@@ -108,7 +108,7 @@ export class UserController {
    */
   @MessagePattern({ cmd: 'share-user-certificate' })
   async shareUserCertificate(payload: {
-    shareUserCredentials: ShareUserCertificate;
+    shareUserCredentials: IShareUserCertificate;
   }): Promise<string> {
     return this.userService.shareUserCertificate(payload.shareUserCredentials);
   }
