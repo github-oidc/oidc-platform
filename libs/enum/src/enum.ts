@@ -56,5 +56,10 @@ export enum UserCertificateId {
     WINNER = 'Winner',
     PARTICIPANT = 'Participant',
     ARBITER = 'Arbiter',
-    WORLD_RECORD = 'WorldRecord'
+    WORLD_RECORD = 'WorldRecord',
+    AYANWORKS_EVENT ='Appreciation Certificate'
+}
+
+export enum CertificateDetails {
+    PINNACLE_CRED_DEF = 'PKDMuYSzJE22Jkh4B1EMiX:3:CL:826:Pinnacle Certificate'
 }

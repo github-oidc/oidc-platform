@@ -77,10 +77,12 @@ export interface ISendVerificationEmail {
     multiEcosystemSupport: boolean;
   }
   
-  export interface ShareUserCertificate {
+  export interface IShareUserCertificate {
     schemaId: string;
+    credDefId: string;
     credentialId: string;
     attributes: Attribute[];
+    invitationUrl?: string;
   }
   
   export interface Attribute {
@@ -166,4 +168,9 @@ export interface  IUserSignIn{
   email: string;
   password: string;
   isPasskey: boolean;
+}
+
+export  interface IPuppeteerOption{
+  width: number;
+  height: number;
 }

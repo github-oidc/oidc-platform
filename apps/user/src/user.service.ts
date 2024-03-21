@@ -31,19 +31,20 @@ import {
   ICheckUserDetails,
   OrgInvitations,
   PlatformSettings,
-  ShareUserCertificate,
   IOrgUsers,
   UpdateUserProfile,
   IUserCredentials, 
    IUserInformation,
-    IUsersProfile
+    IUsersProfile,
+    IPuppeteerOption,
+    IShareUserCertificate
 } from '../interfaces/user.interface';
 import { AcceptRejectInvitationDto } from '../dtos/accept-reject-invitation.dto';
 import { UserActivityService } from '@credebl/user-activity';
 import { SupabaseService } from '@credebl/supabase';
 import { UserDevicesRepository } from '../repositories/user-device.repository';
 import { v4 as uuidv4 } from 'uuid';
-import { EcosystemConfigSettings, UserCertificateId } from '@credebl/enum/enum';
+import { CertificateDetails, EcosystemConfigSettings, UserCertificateId } from '@credebl/enum/enum';
 import { WinnerTemplate } from '../templates/winner-template';
 import { ParticipantTemplate } from '../templates/participant-template';
 import { ArbiterTemplate } from '../templates/arbiter-template';
@@ -55,6 +56,8 @@ import { WorldRecordTemplate } from '../templates/world-record-template';
 import { IUsersActivity } from 'libs/user-activity/interface';
 import { ISendVerificationEmail, ISignInUser, IVerifyUserEmail, IUserInvitations } from '@credebl/common/interfaces/user.interface';
 import { AddPasskeyDetailsDto } from 'apps/api-gateway/src/user/dto/add-user.dto';
+import { EventPinnacle } from '../templates/event-pinnacle';
+import { EventCertificate } from '../templates/event-certificates';
 
 @Injectable()
 export class UserService {
@@ -549,19 +552,18 @@ export class UserService {
     }
   }
 
-  async shareUserCertificate(shareUserCertificate: ShareUserCertificate): Promise<string> {
-
+  async shareUserCertificate(shareUserCertificate: IShareUserCertificate): Promise<string> {
+    let template;
     const attributeArray = [];
     let attributeJson = {};
     const attributePromises = shareUserCertificate.attributes.map(async (iterator: Attribute) => {
       attributeJson = {
         [iterator.name]: iterator.value
       };
+     
       attributeArray.push(attributeJson);
     });
-    await Promise.all(attributePromises);
-    let template;
-
+   
     switch (shareUserCertificate.schemaId.split(':')[2]) {
       case UserCertificateId.WINNER:
         // eslint-disable-next-line no-case-declarations
@@ -583,20 +585,31 @@ export class UserService {
         const userWorldRecordTemplate = new WorldRecordTemplate();
         template = await userWorldRecordTemplate.getWorldRecordTemplate(attributeArray);
         break;
+        case UserCertificateId.AYANWORKS_EVENT:
+          if (CertificateDetails.PINNACLE_CRED_DEF === shareUserCertificate.credDefId) {
+            const userWinnerTemplate = new EventPinnacle();
+            template = await userWinnerTemplate.getPinnacleWinner(attributeArray);
+          } else {
+            const userWinnerTemplate = new EventCertificate();
+            template = await userWinnerTemplate.getCertificateWinner(attributeArray);
+          }
+          break;  
       default:
         throw new NotFoundException('error in get attributes');
     }
+    //Need to handle the option for all type of certificate
+    const option: IPuppeteerOption = {height: 974, width: 1606};
 
     const imageBuffer = 
-    await this.convertHtmlToImage(template, shareUserCertificate.credentialId);
+    await this.convertHtmlToImage(template, shareUserCertificate.credentialId, option);
     const verifyCode = uuidv4();
-
     const imageUrl = await this.awsService.uploadUserCertificate(
       imageBuffer,
       'svg',
-      verifyCode,
       'certificates',
-      'base64'
+      process.env.AWS_PUBLIC_BUCKET_NAME,
+      'base64',
+      'certificates'
     );
     const existCredentialId = await this.userRepository.getUserCredentialsById(shareUserCertificate.credentialId);
     
@@ -618,15 +631,18 @@ export class UserService {
     return this.userRepository.saveCertificateImageUrl(imageUrl, credentialId);
   }
 
-  async convertHtmlToImage(template: string, credentialId: string): Promise<Buffer> {
+  async convertHtmlToImage(template: string, credentialId: string, option?: IPuppeteerOption): Promise<Buffer> {
     const browser = await puppeteer.launch({
       executablePath: '/usr/bin/google-chrome', 
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       protocolTimeout: 200000,
       headless: true
     });
+
+    const options: IPuppeteerOption = (option && 0 < Object.keys(option).length) ? option : {width: 0, height: 1000};  
+
     const page = await browser.newPage();
-    await page.setViewport({ width: 0, height: 1000, deviceScaleFactor: 2});
+    await page.setViewport({ width: options?.width, height: options?.height, deviceScaleFactor: 2});
     await page.setContent(template);
     const screenshot = await page.screenshot();
     await browser.close();

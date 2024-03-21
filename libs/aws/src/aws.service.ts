@@ -25,25 +25,27 @@ export class AwsService {
   async uploadUserCertificate(
     fileBuffer: Buffer,
     ext: string,
-    verifyCode: string,
-    pathAWS: string = '',
-    encoding = 'base64',
-    filename: string = 'certificate'
+    filename: string,
+    bucketName: string,
+    encoding: string,
+    pathAWS: string = ''
   ): Promise<string> {
     const timestamp = Date.now();
     const putObjectAsync = promisify(this.s4.putObject).bind(this.s4);
+
     try {
       await putObjectAsync({
-
-        Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
-        Key: `${pathAWS}/${encodeURIComponent(filename)}.${timestamp}.${ext}`,
+        Bucket: `${bucketName}`,
+        Key: `${pathAWS}/${encodeURIComponent(filename)}-${timestamp}.${ext}`,
         Body: fileBuffer,
         ContentEncoding: encoding,
-        ContentType: `image/svg`
+        ContentType: `image/png`
       });
-      return `https://${process.env.AWS_PUBLIC_BUCKET_NAME}.s3.${process.env.AWS_PUBLIC_REGION}.amazonaws.com/${pathAWS}/${encodeURIComponent(filename)}.${timestamp}.${ext}`;     
-    } catch (err) {
-      throw new HttpException('An error occurred while uploading the image', HttpStatus.SERVICE_UNAVAILABLE);
+
+      const imageUrl = `https://${bucketName}.s3.${process.env.AWS_PUBLIC_REGION}.amazonaws.com/${pathAWS}/${encodeURIComponent(filename)}-${timestamp}.${ext}`;
+      return imageUrl;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.SERVICE_UNAVAILABLE);
     }
   }
 

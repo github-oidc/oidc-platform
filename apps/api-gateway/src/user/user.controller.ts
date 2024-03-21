@@ -47,7 +47,7 @@ import { UpdatePlatformSettingsDto } from './dto/update-platform-settings.dto';
 import { Roles } from '../authz/decorators/roles.decorator';
 import { OrgRolesGuard } from '../authz/guards/org-roles.guard';
 import { OrgRoles } from 'libs/org-roles/enums';
-import { CreateUserCertificateDto } from './dto/share-certificate.dto';
+import { CreateCertificateDto } from './dto/share-certificate.dto';
 import { AwsService } from '@credebl/aws/aws.service';
 
 @UseFilters(CustomExceptionFilter)
@@ -322,7 +322,7 @@ export class UserController {
   })
   @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: ApiResponseDto })
   async shareUserCertificate(
-    @Body() shareUserCredentials: CreateUserCertificateDto,
+    @Body() shareUserCredentials: CreateCertificateDto,
     @Res() res: Response
   ): Promise<Response> {  
     const schemaIdParts = shareUserCredentials.schemaId.split(':');
