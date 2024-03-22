@@ -37,6 +37,10 @@ export class EventPinnacle {
                       <div style="position: absolute; right: 4rem; bottom: 3rem">
                           <img style="height: 70px;" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/anniversary.svg" />
                       </div>
+
+                        <div style="position: absolute;left: 8rem;bottom: 3rem">
+                            <img style="height: 230px; width: 230px;" src="${qrCode}" />
+                        </div>
                       <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto;">
                           <div>
                               <img style="height: 68px;" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/ayanworks-logo-invert.svg" />
@@ -56,9 +60,6 @@ export class EventPinnacle {
             <p>Kirankalyan Kulkarni</p>
             <p>CEO & Co-Founder</p>
         </div>
-    </div>
-    <div style="display: flex; flex-direction: column; align-items: center;">
-        <img src="${qrCode}" style="width: 200px; height: 200px;" alt="QR Code" />
     </div>
     <div style="display: flex; flex-direction: column; align-items: center;">
         <img style="height: 99px" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/ak-sign.svg" />

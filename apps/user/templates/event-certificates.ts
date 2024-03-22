@@ -50,8 +50,12 @@ export class EventCertificate {
                               <p style="color: #342094;">${description}</p>
                               <p style="font-weight: bolder; color: #342094;">~  23rd March 2024  ~</p>
                           </div>
+                          <div style="position: absolute;
+                          left: 9.5rem;
+                          bottom: 2.5rem;">
+                          <img src="${QRDetails}" style="width: 220px; height: 220px;" alt="QR Code" flex; margin-right: 10px;/>
+                          </div>
                           <div style="display: flex; justify-content: center; gap: 3rem; font-size: 32px; text-align: center; margin-top: 1rem; position: absolute; bottom: 3rem; color: #342094;">
-                            <img src="${QRDetails}" style="width: 200px; height: 200px;" alt="QR Code" flex; margin-right: 10px;/>
                               <div style="display: flex; flex-direction: column; align-items: center;">
                                   <img style="height: 99px" src="https://credebl-dev-user-certificate.s3.ap-south-1.amazonaws.com/certificates/kk-sign.svg" />
                                   <div style="border-top: 1px solid #000000; margin-top: -1rem; padding: 1rem 2rem 0 2rem;">
