@@ -639,7 +639,7 @@ export class UserService {
     const browser = await puppeteer.launch({
       executablePath: '/usr/bin/google-chrome', 
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      protocolTimeout: 200000,
+      protocolTimeout: 800000, //initial - 200000
       headless: true
     });
 
