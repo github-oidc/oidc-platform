@@ -68,7 +68,7 @@ class ProofPayload {
     protocolVersion: string;
 }
 
-export class RequestProofDto extends ProofPayload {
+class PresentationPayload {
     @ApiProperty()
     @IsString()
     @Transform(({ value }) => trim(value))
@@ -76,24 +76,67 @@ export class RequestProofDto extends ProofPayload {
     @IsNotEmpty({ message: 'connectionId is required.' })
     connectionId: string;
 
-    @ApiProperty({
-        'example': [
-            {
-                attributeName: 'attributeName',
-                condition: '>=',
-                value: 'predicates',
-                credDefId: 'string',
-                schemaId: 'string'
-            }
-        ],
-        type: () => [ProofRequestAttribute]
-    })
+    @ApiProperty()
     @IsArray({ message: 'attributes must be in array' })
     @ValidateNested()
     @IsObject({ each: true })
     @IsNotEmpty({ message: 'please provide valid attributes' })
     @Type(() => ProofRequestAttribute)
     attributes: ProofRequestAttribute[];
+
+}
+export class RequestProofDto extends ProofPayload {
+
+    // @ApiProperty()
+    // @IsString()
+    // @Transform(({ value }) => trim(value))
+    // @Transform(({ value }) => toLowerCase(value))
+    // @IsNotEmpty({ message: 'connectionId is required.' })
+    // connectionId: string;
+
+    // @ApiProperty({
+    //     'example': [
+    //         {
+    //             attributeName: 'attributeName',
+    //             condition: '>=',
+    //             value: 'predicates',
+    //             credDefId: 'string',
+    //             schemaId: 'string'
+    //         }
+    //     ],
+    //     type: () => [ProofRequestAttribute]
+    // })
+    // @IsArray({ message: 'attributes must be in array' })
+    // @ValidateNested()
+    // @IsObject({ each: true })
+    // @IsNotEmpty({ message: 'please provide valid attributes' })
+    // @Type(() => ProofRequestAttribute)
+    // attributes: ProofRequestAttribute[];
+
+
+        @ApiProperty({
+        'example': [
+            {
+                connectionId: 'string',
+                attributes: [
+                    {
+                        attributeName: 'attributeName',
+                        condition: '>=',
+                        value: 'predicates',
+                        credDefId: 'string',
+                        schemaId: 'string'
+                    }
+                ]
+            }
+    
+        ]
+    })
+    @IsArray({ message: 'attributes must be in array' })
+    @ValidateNested()
+    @IsObject({ each: true })
+    @IsNotEmpty({ message: 'please provide valid attributes' })
+    @Type(() => PresentationPayload)
+    presentationData: PresentationPayload[];
 
     @ApiPropertyOptional()
     @IsOptional()

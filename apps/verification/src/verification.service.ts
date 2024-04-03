@@ -169,9 +169,13 @@ export class VerificationService {
    * @param orgId 
    * @returns Requested proof presentation details
    */
-  async sendProofRequest(requestProof: IRequestProof): Promise<string> {
+  async sendProofRequest(requestProof: IRequestProof): Promise<string[]> {
     try {
       const comment = requestProof.comment ? requestProof.comment : '';
+
+      const { presentationData } = requestProof;
+    const responses: string[] = [];
+    for (const presentation of presentationData) {
 
       let proofRequestPayload: ISendProofRequestPayload = {
         protocolVersion: '',
@@ -197,7 +201,7 @@ export class VerificationService {
       proofRequestPayload = {
         protocolVersion: requestProof.protocolVersion ? requestProof.protocolVersion : 'v1',
         comment,
-        connectionId: requestProof.connectionId,
+        connectionId: presentation.connectionId,
         proofFormats: {
           indy: {
             name: 'Proof Request',
@@ -213,6 +217,7 @@ export class VerificationService {
         parentThreadId: requestProof.parentThreadId || undefined,
         willConfirm: requestProof.willConfirm || undefined
       };
+      
 
       const getAgentDetails = await this.verificationRepository.getAgentEndPoint(requestProof.orgId);
 
@@ -223,7 +228,10 @@ export class VerificationService {
       const payload = { orgId: requestProof.orgId, url, proofRequestPayload };
 
       const getProofPresentationById = await this._sendProofRequest(payload);
-      return getProofPresentationById?.response;
+      responses.push(...getProofPresentationById?.response || []);
+    }
+      return responses;
+    
     } catch (error) {
       this.logger.error(`[verifyPresentation] - error in verify presentation : ${JSON.stringify(error)}`);
       this.verificationErrorHandling(error);
@@ -237,7 +245,7 @@ export class VerificationService {
    * @returns Get requested proof presentation details
    */
   async _sendProofRequest(payload: IProofRequestPayload): Promise<{
-    response: string;
+    response;
   }> {
     try {
 

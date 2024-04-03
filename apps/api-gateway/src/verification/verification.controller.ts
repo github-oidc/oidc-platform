@@ -12,7 +12,8 @@ import {
     ApiQuery,
     ApiExcludeEndpoint
 } from '@nestjs/swagger';
-import { Controller, Logger, Post, Body, Get, Query, HttpStatus, Res, UseGuards, Param, UseFilters, BadRequestException } from '@nestjs/common';
+import { Controller, Logger, Post, Body, Get, Query, HttpStatus, Res, UseGuards, Param, UseFilters, BadRequestException
+} from '@nestjs/common';
 import { ApiResponseDto } from '../dtos/apiResponse.dto';
 import { UnauthorizedErrorDto } from '../dtos/unauthorized-error.dto';
 import { ForbiddenErrorDto } from '../dtos/forbidden-error.dto';
@@ -180,7 +181,7 @@ export class VerificationController {
     ): Promise<Response> {
 
         const attributeArray = [];
-        for (const attrData of requestProof.attributes) {
+             for (const attrData of requestProof.presentationData[0].attributes) {
           if (0 === attributeArray.length) {
             attributeArray.push(Object.values(attrData)[0]);
           } else if (!attributeArray.includes(Object.values(attrData)[0])) {
@@ -190,15 +191,15 @@ export class VerificationController {
           }           
 
         }
-
         requestProof.orgId = orgId;
+        
         const proofData = await this.verificationService.sendProofRequest(requestProof, user);
         const finalResponse: IResponse = {
             statusCode: HttpStatus.CREATED,
             message: ResponseMessages.verification.success.send,
             data: proofData
         };
-        return res.status(HttpStatus.CREATED).json(finalResponse);
+               return res.status(HttpStatus.CREATED).json(finalResponse);
     }
 
     /**

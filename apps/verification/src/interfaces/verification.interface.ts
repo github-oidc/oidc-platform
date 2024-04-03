@@ -1,7 +1,7 @@
 import { AutoAccept } from '@credebl/enum/enum';
 import { IUserRequest } from '@credebl/user-request/user-request.interface';
 
-interface IProofRequestAttribute {
+export interface IProofRequestAttribute {
     attributeName?: string;
     attributeNames?:string[];
     condition?: string;
@@ -11,10 +11,16 @@ interface IProofRequestAttribute {
     credentialName: string;
 }
 
+export interface IPresentationPayload {
+    connectionId?: string;
+    attributes: IProofRequestAttribute[];
+}
+
 export interface IRequestProof {
     orgId: string;
     connectionId?: string;
     attributes: IProofRequestAttribute[];
+    presentationData: IPresentationPayload[];
     comment: string;
     autoAcceptProof: AutoAccept;
     protocolVersion?: string;

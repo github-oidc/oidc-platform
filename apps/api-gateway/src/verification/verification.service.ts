@@ -45,7 +45,7 @@ export class VerificationService extends BaseService {
      */
     sendProofRequest(requestProof: RequestProofDto, user: IUserRequest): Promise<IProofRequest> {
         const payload = { requestProof, user };
-        return this.sendNatsMessage(this.verificationServiceProxy, 'send-proof-request', payload);
+                return this.sendNatsMessage(this.verificationServiceProxy, 'send-proof-request', payload);
     }
 
     /**
