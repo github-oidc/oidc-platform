@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { S3 } from 'aws-sdk';
 import { promisify } from 'util';
@@ -9,7 +9,7 @@ export class AwsService {
   private s4: S3;
   private s3StoreObject: S3;
 
-  constructor() {
+  constructor(private readonly logger: Logger) {
     this.s3 = new S3({
       accessKeyId: process.env.AWS_ACCESS_KEY,
       secretAccessKey: process.env.AWS_SECRET_KEY,
@@ -109,6 +109,7 @@ export class AwsService {
       const receivedData = await this.s3StoreObject.upload(params).promise();
       return receivedData;
     } catch (error) {
+      this.logger.error(`[AWSService] - error in aws service. ${error.message}`);
       throw new RpcException(error.response ? error.response : error);
     }
   }

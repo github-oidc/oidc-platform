@@ -1,4 +1,4 @@
-import { ApiForbiddenResponse, ApiOperation, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiForbiddenResponse, ApiOperation, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Controller, UseFilters, Post, Body, Res, HttpStatus, Param } from '@nestjs/common';
 import  IResponse from '@credebl/common/interfaces/response.interface';
 import { Response } from 'express';
@@ -35,6 +35,7 @@ export class UtilitiesController {
     return res.status(HttpStatus.CREATED).json(finalResponse);
   }
 
+  @ApiBearerAuth()
   @Post('/store-object/:persist')
   @ApiOperation({ summary: 'Store an object and return a short url to it', description: 'Create a short url representing the object' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Created', type: ApiResponseDto })

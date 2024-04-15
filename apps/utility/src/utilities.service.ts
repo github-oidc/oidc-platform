@@ -53,11 +53,12 @@ export class UtilitiesService {
         try {
             const uuid = uuidv4();
             const uploadResult:S3.ManagedUpload.SendData = await this.awsService.storeObject(payload.persistent, uuid, payload.storeObj);
-            const url: string = `https://${uploadResult.Bucket}.s3.${process.env.AWS_S3_STOREOBJECT_REGION}.amazonaws.com/${uploadResult.Key}`;
+            // const url: string = `https://${uploadResult.Bucket}.s3.${process.env.AWS_S3_STOREOBJECT_REGION}.amazonaws.com/${uploadResult.Key}`;
+            const url: string = `${process.env.SHORTENED_URL_DOMAIN}/${uploadResult.Key}`;
             return url;
         } catch (error) {
-            this.logger.error(error);
-            throw new Error('An error occurred while uploading data to S3. Error::::::');
+            this.logger.error(`[UtilitiesService] - Error in utilities service. ${error.message}`);
+            throw new Error('An error occurred while uploading data to S3');
         }
     }
 }
