@@ -136,11 +136,11 @@ export class VerificationController {
         @Res() res: Response,
         @User() user: IUserRequest,
         @Param('orgId', new ParseUUIDPipe({exceptionFactory: (): Error => { throw new BadRequestException(`Invalid format for orgId`); }})) orgId: string
-        ): Promise<Response> {
-        const { pageSize, searchByText, pageNumber, sortField, sortBy } = getAllProofRequests;
+    ): Promise<Response> {
+        const { pageSize, search, pageNumber, sortField, sortBy } = getAllProofRequests;
         const proofRequestsSearchCriteria: IProofRequestSearchCriteria = {
             pageNumber,
-            searchByText,
+            search,
             pageSize,
             sortField,
             sortBy

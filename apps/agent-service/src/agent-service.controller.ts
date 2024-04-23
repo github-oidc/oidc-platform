@@ -246,10 +246,8 @@ export class AgentServiceController {
     return this.agentServiceService.createSecp256k1KeyPair(payload.orgId);
   }
 
-
     @MessagePattern({ cmd: 'agent-create-connection-invitation' })
     async createConnectionInvitation(payload: { url: string; orgId: string; connectionPayload: ICreateConnectionInvitation }): Promise<object> {
       return this.agentServiceService.createConnectionInvitation(payload.url, payload.orgId, payload.connectionPayload);
     }
 }
-
