@@ -44,6 +44,7 @@ import {
   ClientDetails,
   FileParameter,
   IssuanceDto,
+  IssueCredentialDto,
   OOBCredentialDtoWithEmail,
   OOBIssueCredentialDto,
   PreviewFileDetails
@@ -63,7 +64,6 @@ import { RpcException } from '@nestjs/microservices';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { user } from '@prisma/client';
 import { IGetAllIssuedCredentialsDto } from './dtos/get-all-issued-credentials.dto';
-import { IssueCredentialDto } from './dtos/multi-connection.dto';
 
 @Controller()
 @UseFilters(CustomExceptionFilter)

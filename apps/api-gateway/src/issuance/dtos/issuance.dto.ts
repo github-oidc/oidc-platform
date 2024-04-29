@@ -196,6 +196,13 @@ export class CredentialsIssuanceDto {
     reuseConnection?: boolean;
 
     orgId: string;
+
+    @ApiPropertyOptional({ example: 'string' })
+    @IsNotEmpty({ message: 'connectionId is required' })
+    @IsString({ message: 'connectionId should be string' })
+    @Transform(({ value }) => trim(value))
+    @IsOptional()
+    connectionId: string;
 }
 
 export class OOBIssueCredentialDto extends CredentialsIssuanceDto {
@@ -515,4 +522,12 @@ export class ClientDetails {
 
     userId?: string;
     
+}
+
+export class IssueCredentialDto extends OOBIssueCredentialDto {
+  @ApiProperty({ example: 'string' })
+  @IsNotEmpty({ message: 'connectionId is required' })
+  @IsString({ message: 'connectionId should be string' })
+  @Transform(({ value }) => trim(value))
+  connectionId: string;
 }

@@ -3,10 +3,9 @@ import { Injectable, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { BaseService } from 'libs/service/base.service';
 import { IUserRequest } from '@credebl/user-request/user-request.interface';
-import { ClientDetails, FileParameter, IssuanceDto, OOBCredentialDtoWithEmail, OOBIssueCredentialDto, PreviewFileDetails } from './dtos/issuance.dto';
+import { ClientDetails, FileParameter, IssuanceDto, IssueCredentialDto, OOBCredentialDtoWithEmail, OOBIssueCredentialDto, PreviewFileDetails } from './dtos/issuance.dto';
 import { FileExportResponse, IIssuedCredentialSearchParams, IssueCredentialType, RequestPayload } from './interfaces';
 import { IIssuedCredential } from '@credebl/common/interfaces/issuance.interface';
-import { IssueCredentialDto } from './dtos/multi-connection.dto';
 
 @Injectable()
 export class IssuanceService extends BaseService {
@@ -20,7 +19,13 @@ export class IssuanceService extends BaseService {
 
     sendCredentialCreateOffer(issueCredentialDto: IssueCredentialDto, user: IUserRequest): Promise<object> {
 
-        const payload = { comment: issueCredentialDto.comment, credentialDefinitionId: issueCredentialDto.credentialDefinitionId, credentialData: issueCredentialDto.credentialData, orgId: issueCredentialDto.orgId, protocolVersion: issueCredentialDto.protocolVersion, autoAcceptCredential: issueCredentialDto.autoAcceptCredential, user };
+        let payload;
+        if (IssueCredentialType.INDY === issueCredentialDto.credentialType) {
+            payload = { attributes: issueCredentialDto.attributes, comment: issueCredentialDto.comment, credentialDefinitionId: issueCredentialDto.credentialDefinitionId, orgId: issueCredentialDto.orgId, protocolVersion: issueCredentialDto.protocolVersion, goalCode: issueCredentialDto.goalCode, parentThreadId: issueCredentialDto.parentThreadId, willConfirm: issueCredentialDto.willConfirm, label: issueCredentialDto.label, autoAcceptCredential: issueCredentialDto.autoAcceptCredential, credentialType: issueCredentialDto.credentialType, isShortenUrl: issueCredentialDto.isShortenUrl, reuseConnection : issueCredentialDto.reuseConnection, user };
+        }
+        if (IssueCredentialType.JSONLD === issueCredentialDto.credentialType) {
+            payload = { credential: issueCredentialDto.credential, options: issueCredentialDto.options, comment: issueCredentialDto.comment, orgId: issueCredentialDto.orgId, protocolVersion: issueCredentialDto.protocolVersion, goalCode: issueCredentialDto.goalCode, parentThreadId: issueCredentialDto.parentThreadId, willConfirm: issueCredentialDto.willConfirm, label: issueCredentialDto.label, autoAcceptCredential: issueCredentialDto.autoAcceptCredential, credentialType: issueCredentialDto.credentialType, isShortenUrl: issueCredentialDto.isShortenUrl, reuseConnection : issueCredentialDto.reuseConnection, user };
+        }
 
         return this.sendNatsMessage(this.issuanceProxy, 'send-credential-create-offer', payload);
     }

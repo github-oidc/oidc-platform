@@ -53,7 +53,7 @@ export class IssuanceService {
     async sendCredentialCreateOffer(payload: IIssuance): Promise<PromiseSettledResult<ICreateOfferResponse>[]> {
 
     try {
-      const { orgId, credentialDefinitionId, comment, credentialData } = payload || {};
+      const { orgId, credentialDefinitionId, comment } = payload || {};
 
       const schemaResponse: SchemaDetails = await this.issuanceRepository.getCredentialDefinitionDetails(
         credentialDefinitionId
@@ -66,15 +66,16 @@ export class IssuanceService {
         attributesArray.forEach((attribute) => {
             if (attribute.attributeName && attribute.isRequired) {
     
-                credentialData.forEach((credential, i) => {
-                  credential.attributes.forEach((attr) => {
+              // TODO
+                // payload.attributes.forEach((credential, i) => {
+                  payload.attributes.forEach((attr, i) => {
                         if (attr.name === attribute.attributeName && attribute.isRequired && !attr.value) {
                             schemaResponseError.push(
                                 `Attribute ${attribute.attributeName} is required at position ${i + 1}`
                             );
                         }
                     });
-                });
+                // });
             }
         });
     

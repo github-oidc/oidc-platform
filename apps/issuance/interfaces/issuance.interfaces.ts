@@ -12,22 +12,77 @@ export interface IAttributes {
   isRequired?: boolean;
 }
 
-interface ICredentialsAttributes {
-  connectionId: string;
-  attributes: IAttributes[];
+export interface JsonLdCredentialDetailCredentialStatusOptions {
+  type: string
 }
-export interface IIssuance {
-  user?: IUserRequest;
+
+export class JsonLdCredentialDetailCredentialStatus {
+  public constructor(options: JsonLdCredentialDetailCredentialStatusOptions) {
+    if (options) {
+      this.type = options.type;
+    }
+  }
+  public type!: string;
+}
+
+export interface JsonLdCredentialDetailOptionsOptions {
+  proofPurpose: string
+  created?: string
+  domain?: string
+  challenge?: string
+  credentialStatus?: JsonLdCredentialDetailCredentialStatus
+  proofType: string
+}
+
+export class JsonLdCredentialDetailOptions {
+  public constructor(options: JsonLdCredentialDetailOptionsOptions) {
+    if (options) {
+      this.proofPurpose = options.proofPurpose;
+      this.created = options.created;
+      this.domain = options.domain;
+      this.challenge = options.challenge;
+      this.credentialStatus = options.credentialStatus;
+      this.proofType = options.proofType;
+    }
+  }
+  public proofPurpose!: string;
+  public created?: string;
+  public domain?: string;
+  public challenge?: string;
+  public proofType!: string;
+  public credentialStatus?: JsonLdCredentialDetailCredentialStatus;
+}
+
+export class Attribute {
+  name: string;
+  value: string;
+  isRequired?: boolean = false;
+}
+
+export interface CredentialsIssuance {
   credentialDefinitionId: string;
-  comment?: string;
-  credentialData: ICredentialsAttributes[];
-  orgId: string;
-  autoAcceptCredential?: AutoAccept,
+  comment: string;
   protocolVersion?: string;
-  goalCode?: string,
-  parentThreadId?: string,
-  willConfirm?: boolean,
-  label?: string
+  goalCode?: string;
+  parentThreadId?: string;
+  willConfirm?: boolean;
+  label?: string;
+  imageUrl?: string;
+  autoAcceptCredential?: AutoAccept;
+  credentialType:IssueCredentialType;
+  reuseConnection?: boolean;
+  orgId: string;
+}
+
+export interface OOBIssueCredential extends CredentialsIssuance {
+  attributes?: Attribute[];
+  isShortenUrl?: boolean;
+  credential?:Credential;
+  options?:JsonLdCredentialDetailOptions;
+}
+export interface IIssuance extends OOBIssueCredential {
+  user?: IUserRequest;
+  connectionId: string;
 }
 
 interface IIndy {
