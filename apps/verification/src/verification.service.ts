@@ -173,7 +173,7 @@ export class VerificationService {
     try {
       const comment = requestProof.comment ? requestProof.comment : '';
 
-      const { getAgentDetails, organisation } = await this.verificationRepository.getAgentEndPoint(requestProof.orgId);
+      const getAgentDetails = await this.verificationRepository.getAgentEndPoint(requestProof.orgId);
 
       const orgAgentType = await this.verificationRepository.getOrgAgentType(getAgentDetails?.orgAgentTypeId);
       const verificationMethodLabel = 'request-proof';
@@ -192,7 +192,7 @@ export class VerificationService {
         goalCode: requestProof.goalCode || undefined,
         parentThreadId: requestProof.parentThreadId || undefined,
         willConfirm: requestProof.willConfirm || undefined,
-        imageUrl: organisation.logoUrl
+        imageUrl: getAgentDetails['organisation']?.logoUrl
       };
 
       if (requestProof.type === ProofRequestType.INDY) {
@@ -260,13 +260,12 @@ export class VerificationService {
    */
   async verifyPresentation (proofId: string, orgId: string): Promise<string> {
     try {
-      const agentDetails = await this.verificationRepository.getAgentEndPoint(orgId);
-      const { getAgentDetails } = agentDetails;
+      const getAgentDetails = await this.verificationRepository.getAgentEndPoint(orgId);
       const orgAgentTypeData = await this.verificationRepository.getOrgAgentType(getAgentDetails?.orgAgentTypeId);
 
       const verificationMethod = 'accept-presentation';
 
-      const url = await this.getAgentUrl(verificationMethod, orgAgentTypeData, getAgentDetails?.agentEndPoint, agentDetails?.tenantId, '', proofId);
+      const url = await this.getAgentUrl(verificationMethod, orgAgentTypeData, getAgentDetails?.agentEndPoint, getAgentDetails?.tenantId, '', proofId);
 
       const payload = { orgId, url };
       const getProofPresentationById = await this._verifyPresentation(payload);
@@ -327,7 +326,7 @@ export class VerificationService {
  */
   async sendOutOfBandPresentationRequest (outOfBandRequestProof: ISendProofRequestPayload, user: IUserRequest): Promise<boolean | object> {
     try {
-      const { getAgentDetails, organisation } = await this.verificationRepository.getAgentEndPoint(user.orgId);
+      const getAgentDetails = await this.verificationRepository.getAgentEndPoint(user.orgId);
       const orgAgentType = await this.verificationRepository.getOrgAgentType(getAgentDetails?.orgAgentTypeId);
       const verificationMethodLabel = 'create-request-out-of-band';
       const url = await this.getAgentUrl(verificationMethodLabel, orgAgentType, getAgentDetails?.agentEndPoint, getAgentDetails?.tenantId);
@@ -348,9 +347,9 @@ export class VerificationService {
 
       if (ProofRequestType.INDY === type) {
         updateOutOfBandRequestProof.protocolVersion = updateOutOfBandRequestProof.protocolVersion || 'v1';
-        updateOutOfBandRequestProof.imageUrl = organisation?.logoUrl;
+        updateOutOfBandRequestProof.imageUrl = getAgentDetails['organisation']?.logoUrl;
         updateOutOfBandRequestProof.invitationDid = invitationDid || undefined;
-        outOfBandRequestProof.label = organisation?.name;
+        outOfBandRequestProof.label = getAgentDetails['organisation']?.name;
         payload = {
           orgId: user.orgId,
           url,
@@ -367,8 +366,8 @@ export class VerificationService {
             goalCode: outOfBandRequestProof.goalCode,
             protocolVersion: outOfBandRequestProof.protocolVersion || 'v2',
             comment: outOfBandRequestProof.comment,
-            imageUrl: organisation?.logoUrl,
-            label: organisation?.name,
+            imageUrl: getAgentDetails['organisation']?.logoUrl,
+            label: getAgentDetails['organisation']?.name,
             proofFormats: {
               presentationExchange: {
                 presentationDefinition: {
@@ -385,7 +384,7 @@ export class VerificationService {
       }
 
       if (emailId) {
-        await this.sendEmailInBatches(payload, emailId, getAgentDetails, organisation);
+        await this.sendEmailInBatches(payload, emailId, getAgentDetails, getAgentDetails['organisation']);
         return true;
       } else {
         const presentationProof: IInvitation = await this.generateOOBProofReq(payload);

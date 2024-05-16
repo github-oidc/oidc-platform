@@ -27,6 +27,7 @@ export interface IRequestProof {
     protocolVersion?: string;
     emailId?: string[];
     goalCode?: string;
+    imageUrl?: string;
     parentThreadId?: string;
     willConfirm?: boolean;
 }

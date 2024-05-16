@@ -53,6 +53,7 @@ export class VerificationService extends BaseService {
           autoAcceptProof: requestProofDto.autoAcceptProof,
           connectionId: requestProofDto.connectionId,
           goalCode: requestProofDto.goalCode,
+          imageUrl: requestProofDto?.imageUrl,
           parentThreadId: requestProofDto.parentThreadId,
           protocolVersion: requestProofDto.protocolVersion,
           willConfirm: requestProofDto.willConfirm

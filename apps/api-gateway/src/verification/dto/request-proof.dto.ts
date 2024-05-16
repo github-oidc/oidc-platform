@@ -51,6 +51,12 @@ class ProofPayload {
     goalCode: string;
 
     @ApiPropertyOptional()
+    @IsOptional()
+    @IsNotEmpty({ message: 'please provide valid imageUrl' })
+    @IsString({ message: 'imageUrl must be a string' })
+    imageUrl?: string;
+
+    @ApiPropertyOptional()
     @IsString({ message: 'parentThreadId must be in string' })
     @IsNotEmpty({ message: 'please provide valid parentThreadId' })
     @IsOptional()
@@ -331,6 +337,12 @@ export class SendProofRequestPayload {
     @IsNotEmpty({ message: 'please provide valid protocol version' })
     @IsOptional()
     protocolVersion: string;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsNotEmpty({ message: 'please provide valid imageUrl' })
+    @IsString({ message: 'imageUrl must be a string' })
+    imageUrl?: string;
 
     @ApiPropertyOptional()
     @IsOptional()
