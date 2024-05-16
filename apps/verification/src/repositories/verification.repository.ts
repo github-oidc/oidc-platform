@@ -27,6 +27,9 @@ export class VerificationRepository {
       const agentDetails = await this.prisma.org_agents.findFirst({
         where: {
           orgId
+        },
+        include: {
+          organisation: true
         }
       });
 
