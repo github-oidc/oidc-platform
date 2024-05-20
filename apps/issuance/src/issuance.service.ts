@@ -1018,6 +1018,7 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
   }
 
   async issueBulkCredential(requestId: string, orgId: string, clientDetails: IClientDetails, reqPayload: ImportFileDetails): Promise<string> {
+    this.logger.log(`inside issueBulkCredential::::::`, requestId);
     const fileUpload: {
       lastChangedDateTime: Date;
       name?: string;
