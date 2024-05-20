@@ -1085,8 +1085,10 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
       if (!respFile) {
         throw new BadRequestException(ResponseMessages.issuance.error.fileData);
       }
+      this.logger.log(`respFile::::::`, respFile);
       for (const element of respFile) {
         try {
+          this.logger.log(`element::::::`, element);
           this.bulkIssuanceQueue.add(
             'issue-credential',
             {
