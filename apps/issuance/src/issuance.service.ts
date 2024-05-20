@@ -1087,21 +1087,24 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
       }
       for (const element of respFile) {
         try {
-          const payload = {
-            data: element.credential_data,
-            fileUploadId: element.fileUploadId,
-            clientId: clientDetails.clientId,
-            cacheId: requestId,
-            credentialDefinitionId: element.credDefId,
-            schemaLedgerId: element.schemaId,
-            isRetry: false,
-            orgId,
-            id: element.id,
-            isLastData: respFile.indexOf(element) === respFile.length - 1
-          };
-
-          await this.delay(500); // Wait for 0.5 secends
-          this.processIssuanceData(payload);
+          this.bulkIssuanceQueue.add(
+            'issue-credential',
+            {
+              data: element.credential_data,
+              fileUploadId: element.fileUploadId,
+              clientId: clientDetails.clientId,
+              cacheId: requestId,
+              credentialDefinitionId: element.credDefId,
+              schemaLedgerId: element.schemaId,
+              isRetry: false,
+              orgId,
+              id: element.id,
+              isLastData: respFile.indexOf(element) === respFile.length - 1
+            },
+            { delay: 5000 }
+          );
+          // await this.delay(500); // Wait for 0.5 secends
+          // this.processIssuanceData(payload);
         } catch (error) {
           this.logger.error(`Error processing issuance data: ${error}`);
         }
@@ -1169,7 +1172,7 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type
   async processIssuanceData(jobDetails) {
-
+    this.logger.log(`jobDetails::::::::${jobDetails}`);
     const socket = await io(`${process.env.SOCKET_HOST}`, {
       reconnection: true,
       reconnectionDelay: 5000,
