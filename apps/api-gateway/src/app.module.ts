@@ -54,7 +54,7 @@ import { NotificationModule } from './notification/notification.module';
     UtilitiesModule,
     WebhookModule,
     NotificationModule,
-    CacheModule.register({ store: redisStore, host: process.env.REDIS_HOST, port: process.env.REDIS_PORT })
+    CacheModule.register({ store: redisStore, host: '15.207.98.155', port: process.env.REDIS_PORT })
     // BullModule.forRoot({
     //   redis: {
     //     host: process.env.REDIS_HOST,
