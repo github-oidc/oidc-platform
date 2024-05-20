@@ -1089,9 +1089,8 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
       this.logger.log(`respFile::::::`, respFile);
       for (const element of respFile) {
         try {
-          this.logger.log(`element::::::`, element);
+          this.logger.log(`element::::::Test`, element);
           this.bulkIssuanceQueue.add(
-            'issue-credential',
             {
               data: element.credential_data,
               fileUploadId: element.fileUploadId,
@@ -1175,7 +1174,7 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type
   async processIssuanceData(jobDetails) {
-    this.logger.log(`jobDetails::::::::${jobDetails}`);
+    this.logger.log(`jobDetails::::::::Test`, JSON.stringify(jobDetails));
     const socket = await io(`${process.env.SOCKET_HOST}`, {
       reconnection: true,
       reconnectionDelay: 5000,

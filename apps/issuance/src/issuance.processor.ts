@@ -15,7 +15,7 @@ export class BulkIssuanceProcessor {
     );
   }
 
-  @Process('issue-credential')
+  @Process()
   async issueCredential(job: Job<unknown>):Promise<void> {
     this.logger.log(
       `Processing job ${job.id} of type ${job.name} with data ${JSON.stringify(job)}...`

@@ -30,13 +30,13 @@ import { AwsService } from '@credebl/aws';
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT)
+        port: 6379
       }
     }),
     BullModule.registerQueue({
       name: 'bulk-issuance',
       redis: {
-        port: parseInt(process.env.REDIS_PORT)
+        port: 6379
       }
     })
   ],
