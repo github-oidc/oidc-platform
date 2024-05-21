@@ -1089,7 +1089,7 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
       this.logger.log(`respFile::::::`, respFile);
       for (const element of respFile) {
         try {
-          this.logger.log(`element::::::Test1`, element);
+          this.logger.log(`element::::::Test2`, element);
           this.bulkIssuanceQueue.add(
             {
               data: element.credential_data,
