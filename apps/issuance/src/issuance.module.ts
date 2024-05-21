@@ -35,8 +35,8 @@ import { AwsService } from '@credebl/aws';
       }
     }),
     BullModule.registerQueue({
+      name: 'bulk-issuance',
       redis: {
-        name: 'bulk-issuance',
         enableTLSForSentinelMode: false,
         port: 6379
       }
