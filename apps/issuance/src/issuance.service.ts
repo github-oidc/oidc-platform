@@ -1086,7 +1086,10 @@ async sendEmailForCredentialOffer(sendEmailCredentialOffer: SendEmailCredentialO
       if (!respFile) {
         throw new BadRequestException(ResponseMessages.issuance.error.fileData);
       }
+      const temp = await this.bulkIssuanceQueue.isReady();
       this.logger.log(`respFile::::::`, respFile);
+      // eslint-disable-next-line no-console
+      console.log('temp:::::::::', temp);
       for (const element of respFile) {
         try {
           this.logger.log(`element::::::Test3`, element);

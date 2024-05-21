@@ -27,13 +27,6 @@ import { AwsService } from '@credebl/aws';
     ]),
     CommonModule,
     CacheModule.register({ store: redisStore, host: '15.207.98.155', port: process.env.REDIS_PORT }),
-    BullModule.forRoot({
-      redis: {
-        enableTLSForSentinelMode: false,
-        host: '15.207.98.155',
-        port: 6379
-      }
-    }),
     BullModule.registerQueue({
       name: 'bulk-issuance'
     })

@@ -57,14 +57,9 @@ import { NotificationModule } from './notification/notification.module';
     CacheModule.register({ store: redisStore, host: '15.207.98.155', port: process.env.REDIS_PORT })
     // BullModule.forRoot({
     //   redis: {
-    //     host: process.env.REDIS_HOST,
-    //     port: parseInt(process.env.REDIS_PORT)
-    //   }
-    // }),
-    // BullModule.registerQueue({
-    //   name: 'bulk-issuance',
-    //   redis: {
-    //     port: parseInt(process.env.REDIS_PORT)
+    //     enableTLSForSentinelMode: false,
+    //     host: '15.207.98.155',
+    //     port: 6379
     //   }
     // })
   ],
