@@ -30,8 +30,7 @@ import { AwsService } from '@credebl/aws';
     BullModule.forRoot({
       redis: {
         host: '15.207.98.155',
-        port: 6379,
-        lazyConnect: true
+        port: 6379
       }
     }),
     BullModule.registerQueue({
